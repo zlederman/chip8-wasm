@@ -19,7 +19,10 @@ function buf2hex(buffer) { // buffer is an ArrayBuffer
 async function start(){
    let rom = await loadRom();
    let chip8 = await initChip8(rom);
-   chip8.tick()
+   for(let i = 0; i < rom.length / 2; i++){
+    chip8.tick();
+    chip8.get_display()
+   }
 }
 
 start().then().catch(console.error);
