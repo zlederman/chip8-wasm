@@ -8,8 +8,8 @@ height = 32;
 width = 64;
 const PIXEL_SIZE = 16;
 const GRID_COLOR = "#CCCCCC";
-const DEAD_COLOR = "#FFFFFF";
-const ALIVE_COLOR = "#000000";
+const OFF_COLOR = "#000000";
+const ON_COLOR = "#48ff00";
 const canvas = document.getElementById("chip8-screen");
 
 const ctx = canvas.getContext('2d');
@@ -48,8 +48,8 @@ function drawPixels() {
         const idx = getIndex(row, col);
 
         ctx.fillStyle = pixels[idx] === mod.PixelState.OFF
-            ? DEAD_COLOR
-            : ALIVE_COLOR;
+            ? OFF_COLOR
+            : ON_COLOR;
 
         ctx.fillRect(
             col * (PIXEL_SIZE + 1) + 1,
