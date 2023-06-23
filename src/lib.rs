@@ -161,7 +161,7 @@ impl Chip8 {
         let instr = self.fetch();
         self.pc += 2;
         let instr_debug = instr.to_string();
-        console_log!("Instruction {}",instr_debug);
+        // console_log!("Instruction {}",instr_debug);
         self.exec(instr);
     }
 }
