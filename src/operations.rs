@@ -27,6 +27,39 @@ macro_rules! console_log {
 #[wasm_bindgen]
 impl Chip8 {
 
+    pub fn eight(&mut self, instr: Instruction){
+        // 8XYN
+        let x = instr.x as usize;
+        let y = instr.y as usize;
+        match instr.n {
+            0 => self.gp_reg[x] = self.gp_reg[y],
+            1 => self.gp_reg[x] |= self.gp_reg[y],
+            2 => self.gp_reg[x] &= self.gp_reg[y],
+            3 => self.gp_reg[x] ^= self.gp_reg[y],
+            4 | 5 | 6 | 7 | 0xE => self.stateful_arithmetic(instr),
+            _ => console_log!("Error with {:?}",instr.to_string())
+
+        }
+    }
+    pub fn zero(&mut self, instr: Instruction){
+        match instr.nn {
+            0xE0 => self.clear(instr),
+            0xEE => self.pop(instr),
+            _ => console_log!("Unknown Zero! {:?}", instr.to_string())
+        }
+    }
+    pub fn f(&mut self, instr: Instruction){
+        match instr.nn {
+            0x07 | 0x15 | 0x18 => self.timers(instr),
+            0x1E => self.add_to_index(instr),
+            0x0A => self.get_key(instr),
+            0x29 => self.get_font(instr),
+            0x33 => self.decimal_conversion(instr),
+            0x55 => self.store(instr),
+            0x65 => self.load(instr),
+            _ => console_log!("Unknown FXNN instruction {:?}",instr.to_string())
+        }
+    }
     pub fn push(&mut self, instr:Instruction){
         // 2NNN
         self.stack.push(self.pc);

@@ -24,4 +24,15 @@ impl Instruction {
             nnn=self.nnn
         )
     }
+    pub fn from_str(val: &str) -> Instruction {
+        let mut digits = val.chars();
+        let mut u8s: [u8;4] = [0;4];
+        for (i,c) in digits.enumerate(){
+            u8s[i] = char::to_digit(c, 16).unwrap() as u8;
+        }
+        let nn = u8::from_str_radix(&val[2..4], 16).expect("Cant parse string");
+        let nnn = u16::from_str_radix(&val[1..4], 16).expect("Cant parse string");
+        return Instruction { operation: u8s[0], x: u8s[1], y: u8s[2], n: u8s[3], nn: nn, nnn: nnn }
+
+    }
 }
