@@ -1,24 +1,19 @@
-mod instructions;
+pub mod instructions;
 mod operations;
 
 use instructions::Instruction;
-use operations::*;
+
 
 use wasm_bindgen::prelude::*;
 use js_sys;
-use rand::prelude::*;
+
 
 const MEM_SIZE: usize = 4096;
 const DISPLAY_WIDTH: usize = 64;
 const DISPLAY_HEIGHT: usize = 32;
 const PIXELS: usize = DISPLAY_HEIGHT * DISPLAY_WIDTH;
 const START_OF_PROG: usize = 0x200;
-const ADD: u8 = 4;
-const SUB_XY: u8 = 5;
-const SUB_YX: u8 = 7;
-const SHIFT_LEFT: u8 = 0xE;
-const SHIFT_RIGHT: u8 = 0x6;
-const FONT_OFFSET: usize = 0x050;
+
 
 
 #[wasm_bindgen]
@@ -51,7 +46,7 @@ pub enum KeyState{
 
 
 #[wasm_bindgen]
-struct Chip8 {
+pub struct Chip8 {
     pc: usize,
     index: usize,
     delay_timer: u8,
@@ -162,5 +157,8 @@ impl Chip8 {
         let instr_debug = instr.to_string();
         // console_log!("Instruction {}",instr_debug);
         self.exec(instr);
+    }
+    pub fn get_pc(&self) -> usize{
+        return self.pc;
     }
 }
