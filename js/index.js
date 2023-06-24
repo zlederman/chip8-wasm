@@ -1,4 +1,3 @@
-
 const wasm = import('../pkg')
 const wasm_memory = import('../pkg/index_bg.wasm')
 var memory;
