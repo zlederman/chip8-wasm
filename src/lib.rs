@@ -1,8 +1,8 @@
 pub mod instructions;
+pub mod fonts;
 mod operations;
-
 use instructions::Instruction;
-
+use fonts::{get_font_val, FONTS_SIZE,FONT_OFFSET};
 
 use wasm_bindgen::prelude::*;
 use js_sys;
@@ -49,8 +49,8 @@ pub enum KeyState{
 pub struct Chip8 {
     pc: usize,
     index: usize,
-    delay_timer: u8,
-    sound_timer: u8,
+    pub delay_timer: u8,
+    pub sound_timer: u8,
     stack: Vec<usize>,
     display: [PixelState; PIXELS],
     memory: [u8; MEM_SIZE],
@@ -67,7 +67,10 @@ impl Chip8 {
         rom.copy_to(&mut slice[..]);
         for (i, val) in slice.iter().enumerate(){
             mem[i + START_OF_PROG] = val.clone() as u8;
-        }
+        }// load program
+        for i in 0..FONTS_SIZE{
+            mem[i + FONT_OFFSET] = get_font_val(i);
+        }// load fonts
         return Chip8 {
             pc: START_OF_PROG,
             index: 0,
@@ -137,5 +140,12 @@ impl Chip8 {
     }
     pub fn get_index(&self) -> usize {
         return self.index;
+    }
+    pub fn get_mem_at(&self, idx: usize) -> u8 {
+        return self.memory[idx];
+
+    }
+    pub fn set_key(&mut self, idx: usize, state: KeyState){
+        self.keypad[idx] = state;
     }
 }

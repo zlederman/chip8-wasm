@@ -1,10 +1,12 @@
+
 use crate::{KeyState, PixelState};
 use crate::log;
 use crate::Chip8;
+use crate::FONT_OFFSET;
 use crate::Instruction;
 use wasm_bindgen::prelude::*;
-use js_sys;
-use rand::prelude::*;
+
+
 
 const MEM_SIZE: usize = 4096;
 const DISPLAY_WIDTH: usize = 64;
@@ -16,7 +18,6 @@ const SUB_XY: u8 = 5;
 const SUB_YX: u8 = 7;
 const SHIFT_LEFT: u8 = 0xE;
 const SHIFT_RIGHT: u8 = 0x6;
-const FONT_OFFSET: usize = 0x050;
 
 macro_rules! console_log {
     // Note that this is using the `log` function imported above during
@@ -193,7 +194,7 @@ impl Chip8 {
     pub fn decimal_conversion(&mut self, instr: Instruction){
         // FX33
         let mut vx = self.gp_reg[instr.x as usize];
-        for i in (0..2).rev(){
+        for i in (0..3).rev(){
             self.memory[self.index + i] = vx % 10;
             vx /= 10;
         }

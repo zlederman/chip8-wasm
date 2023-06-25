@@ -1,10 +1,12 @@
+
 use wasm_bindgen::convert::FromWasmAbi;
 use wasm_bindgen_test::{wasm_bindgen_test};
 use wasm_bindgen::JsValue;
 use js_sys::Uint8Array;
 use chip8_emulator::Chip8;
+use chip8_emulator::KeyState;
+use chip8_emulator::fonts::{FONTS_SIZE, FONT_OFFSET};
 use chip8_emulator::instructions::Instruction;
-
 fn empty_program() -> Uint8Array {
     return Uint8Array::new(&JsValue::from(43));
 }
@@ -198,10 +200,6 @@ fn stateful_math_add_test(){
     chip8.eight(add.clone());
     assert_eq!(chip8.get_register(0), 0xFF);
     assert_eq!(chip8.get_register(0xF), 1);
-    // let sub_xy = Instruction::from_str("8015");
-    // let sub_yx  = Instruction::from_str("8017");
-    // let shift_left = Instruction::from_str("801E");
-    // let shift_right = Instruction::from_str("8016");
 }
 
 #[wasm_bindgen_test]
@@ -275,4 +273,91 @@ fn shift_right_test(){
     chip8.eight(rshift.clone());
     assert_eq!(chip8.get_register(0),0x00);
     assert_eq!(chip8.get_register(0xF),0x0);
+}
+
+#[wasm_bindgen_test]
+fn test_timers(){
+    let mut chip8 = Chip8::new(&empty_program());
+    let init_x = Instruction::from_str("61FE");
+    let set_delay = Instruction::from_str("F115");
+    let set_sound = Instruction::from_str("F118");
+    let get_delay = Instruction::from_str("F207");
+    chip8.set_register(init_x);
+    chip8.f(set_delay);
+    chip8.f(set_sound);
+    chip8.f(get_delay);
+    assert_eq!(chip8.delay_timer, 0xFE);
+    assert_eq!(chip8.sound_timer, 0xFE);
+    assert_eq!(chip8.get_register(2), 0xFE);
+}
+#[wasm_bindgen_test]
+fn test_store_and_load(){
+    let mut chip8 = Chip8::new(&empty_program());
+    chip8.set_index(Instruction::from_str("A300"));
+    let setters = ["6001","6102","6203"];
+    let resetters = ["6000","6100","6200"];
+    let store3 = Instruction::from_str("F255");
+    let load3 = Instruction::from_str("F265");
+    for instr_str in setters{
+        chip8.set_register(Instruction::from_str(instr_str));
+    }
+    chip8.f(store3);
+    for instr_str in resetters{
+        chip8.set_register(Instruction::from_str(instr_str));
+    }
+    chip8.f(load3);
+    for i in 0..3{
+        assert_eq!(chip8.get_register(i),i as u8 + 1);
+    }
+}
+
+#[wasm_bindgen_test]
+fn test_get_font(){
+    let mut chip8 = Chip8::new(&empty_program());
+    let mut font_idxs = [0_usize;16];
+    for i in 0..16 {
+        font_idxs[i] = (i * 5) + FONT_OFFSET;
+    }
+    for i in 0..16 {
+        chip8.set_register(Instruction::from_str(format!("60{:02X}",i as u16).as_str()));
+        chip8.f(Instruction::from_str("F029"));
+        assert_eq!(chip8.get_index(),font_idxs[i])
+    }
+}
+
+#[wasm_bindgen_test]
+fn test_decimal_conversion(){
+    let mut chip8 = Chip8::new(&empty_program());
+    chip8.set_register(Instruction::from_str("60FE"));
+    chip8.f(Instruction::from_str("F033"));
+    assert_eq!(chip8.get_mem_at(0),2);
+    assert_eq!(chip8.get_mem_at(1),5);
+    assert_eq!(chip8.get_mem_at(2),4);
+}
+
+#[wasm_bindgen_test]
+fn test_get_key(){
+    let mut chip8 = Chip8::new(&empty_program());
+    chip8.f(Instruction::from_str("F00A"));
+    assert_eq!(chip8.get_pc(), 0x200 - 2);
+    chip8.set_key(2, KeyState::ON);
+    chip8.f(Instruction::from_str("F00A"));
+    assert_eq!(chip8.get_register(0),2);
+}
+
+#[wasm_bindgen_test]
+fn test_skip_key_eq(){
+    let mut chip8 = Chip8::new(&empty_program());
+    chip8.set_register(Instruction::from_str("600F"));
+    chip8.set_key(0xF, KeyState::ON);
+    chip8.skip_key(Instruction::from_str("E09E"));
+    assert_eq!(chip8.get_pc(), 0x200 + 2);
+}
+#[wasm_bindgen_test]
+fn test_skip_key_neq(){
+    let mut chip8 = Chip8::new(&empty_program());
+    chip8.set_register(Instruction::from_str("600F"));
+    chip8.set_key(0xF, KeyState::OFF);
+    chip8.skip_key(Instruction::from_str("E0A1"));
+    assert_eq!(chip8.get_pc(), 0x200 + 2);
 }
