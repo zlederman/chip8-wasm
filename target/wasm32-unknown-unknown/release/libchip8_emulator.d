@@ -1,0 +1,1 @@
+/Users/zach-mac/Documents/dev/chip8-wasm/target/wasm32-unknown-unknown/release/libchip8_emulator.rlib: /Users/zach-mac/Documents/dev/chip8-wasm/src/fonts.rs /Users/zach-mac/Documents/dev/chip8-wasm/src/instructions.rs /Users/zach-mac/Documents/dev/chip8-wasm/src/lib.rs /Users/zach-mac/Documents/dev/chip8-wasm/src/operations.rs
