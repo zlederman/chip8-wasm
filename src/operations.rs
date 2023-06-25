@@ -131,7 +131,7 @@ impl Chip8 {
     pub fn add_register(&mut self, instr: Instruction){
         // 7XNN
         let vx = self.gp_reg[instr.x as usize];
-        self.gp_reg[instr.x as usize] = vx.saturating_add(instr.nn);
+        self.gp_reg[instr.x as usize] = vx.wrapping_add(instr.nn);
     }
 
     pub fn set_index(&mut self, instr: Instruction){
@@ -208,7 +208,7 @@ impl Chip8 {
         let mut val: u8 = 0;
         let mut flag: u8 = 0;
         if instr.n == ADD {
-            val = vx.saturating_add(vy);
+            val = vx.wrapping_add(vy);
             flag = if vx.checked_add(vy) == None {1} else {0};
         }
         if instr.n == SUB_XY{
@@ -221,8 +221,8 @@ impl Chip8 {
             flag = if vy.checked_sub(vx) == None {0} else {1};
         }
         if instr.n == SHIFT_LEFT {
-            val = vx.saturating_mul(2);
-            flag = (vx >> 7) & 1;
+            val = vx.wrapping_mul(2);
+            flag = (vx & 0x80) >> 7;
 
         }
         if instr.n == SHIFT_RIGHT {
@@ -249,17 +249,20 @@ impl Chip8 {
             let sprite_byte = self.memory[temp_idx];
             for mask_idx in 0..8{
                 let pixel_idx = ((x + mask_idx) + (y * 64)) as usize;
-                let pixel = self.display[pixel_idx];
-                let bit = (sprite_byte >> 7 - mask_idx) & 1;
-                if bit == 1{
-                    if pixel == PixelState::ON{
-                        self.display[pixel_idx] = PixelState::OFF;
-                        self.gp_reg[0xF] = 1;
-                    }
-                    else{
-                        self.display[pixel_idx] = PixelState::ON;
+                if pixel_idx < 2048 {
+                    let pixel = self.display[pixel_idx];
+                    let bit = (sprite_byte >> 7 - mask_idx) & 1;
+                    if bit == 1{
+                        if pixel == PixelState::ON{
+                            self.display[pixel_idx] = PixelState::OFF;
+                            self.gp_reg[0xF] = 1;
+                        }
+                        else{
+                            self.display[pixel_idx] = PixelState::ON;
+                        }
                     }
                 }
+
             }
             y += 1;
         }

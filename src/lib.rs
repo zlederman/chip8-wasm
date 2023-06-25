@@ -62,6 +62,7 @@ pub struct Chip8 {
 #[wasm_bindgen]
 impl Chip8 {
     pub fn new(rom: &js_sys::Uint8Array) -> Chip8 {
+        console_error_panic_hook::set_once();
         let mut mem:[u8;MEM_SIZE] = [0; MEM_SIZE];
         let mut slice: Vec<u8> = vec![0; rom.length() as usize];
         rom.copy_to(&mut slice[..]);
@@ -129,6 +130,11 @@ impl Chip8 {
         // console_log!("Instruction {}",instr_debug);
         self.exec(instr);
     }
+    pub fn tick_timers(&mut self){
+        self.delay_timer = self.delay_timer.saturating_sub(1);
+        self.sound_timer = self.sound_timer.saturating_sub(1);
+    }
+
     pub fn get_pc(&self) -> usize{
         return self.pc;
     }
@@ -145,7 +151,10 @@ impl Chip8 {
         return self.memory[idx];
 
     }
-    pub fn set_key(&mut self, idx: usize, state: KeyState){
+    pub fn set_key_state(&mut self, idx: usize, state: KeyState){
         self.keypad[idx] = state;
+    }
+    pub fn get_key_state(&mut self, idx: usize) -> KeyState{
+        return self.keypad[idx];
     }
 }

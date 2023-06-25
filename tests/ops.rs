@@ -1,11 +1,9 @@
-
-use wasm_bindgen::convert::FromWasmAbi;
 use wasm_bindgen_test::{wasm_bindgen_test};
 use wasm_bindgen::JsValue;
 use js_sys::Uint8Array;
 use chip8_emulator::Chip8;
 use chip8_emulator::KeyState;
-use chip8_emulator::fonts::{FONTS_SIZE, FONT_OFFSET};
+use chip8_emulator::fonts::{FONT_OFFSET};
 use chip8_emulator::instructions::Instruction;
 fn empty_program() -> Uint8Array {
     return Uint8Array::new(&JsValue::from(43));
@@ -340,7 +338,7 @@ fn test_get_key(){
     let mut chip8 = Chip8::new(&empty_program());
     chip8.f(Instruction::from_str("F00A"));
     assert_eq!(chip8.get_pc(), 0x200 - 2);
-    chip8.set_key(2, KeyState::ON);
+    chip8.set_key_state(2, KeyState::ON);
     chip8.f(Instruction::from_str("F00A"));
     assert_eq!(chip8.get_register(0),2);
 }
@@ -349,7 +347,7 @@ fn test_get_key(){
 fn test_skip_key_eq(){
     let mut chip8 = Chip8::new(&empty_program());
     chip8.set_register(Instruction::from_str("600F"));
-    chip8.set_key(0xF, KeyState::ON);
+    chip8.set_key_state(0xF, KeyState::ON);
     chip8.skip_key(Instruction::from_str("E09E"));
     assert_eq!(chip8.get_pc(), 0x200 + 2);
 }
@@ -357,7 +355,7 @@ fn test_skip_key_eq(){
 fn test_skip_key_neq(){
     let mut chip8 = Chip8::new(&empty_program());
     chip8.set_register(Instruction::from_str("600F"));
-    chip8.set_key(0xF, KeyState::OFF);
+    chip8.set_key_state(0xF, KeyState::OFF);
     chip8.skip_key(Instruction::from_str("E0A1"));
     assert_eq!(chip8.get_pc(), 0x200 + 2);
 }

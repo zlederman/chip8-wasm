@@ -1,4 +1,6 @@
 import { drawGrid, drawPixels } from './display';
+import { keyBoardSetUp } from './keyboard';
+
 const wasm = import('../pkg')
 const wasm_memory = import('../pkg/index_bg.wasm')
 var memory;
@@ -11,6 +13,7 @@ function render() {
         chip8.tick();
     }
     drawGrid();
+    chip8.tick_timers();
     drawPixels(chip8, memory, mod);
     requestAnimationFrame(render);
 }
@@ -19,7 +22,9 @@ async function initChip8(rom){
     return chip8;
 }
 async function loadRom(){
-    let data = await fetch('/roms/ibm.ch8');
+    let romSelector = document.getElementById('rom-select')
+    let value = romSelector.value
+    let data = await fetch('/roms/' + value);
     let buff = await data.arrayBuffer();
     return new Uint8Array(buff);
 }
@@ -31,9 +36,10 @@ function buf2hex(buffer) { // buffer is an ArrayBuffer
 
 async function start(){
    mod = await wasm;
-   memory = (await wasm_memory).memory
+   memory = (await wasm_memory).memory;
    let rom = await loadRom();
    chip8 = await initChip8(rom);
-   render()
+   keyBoardSetUp(chip8, mod);
+   render();
 }
 start().then().catch(console.error);
