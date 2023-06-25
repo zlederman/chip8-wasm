@@ -1,6 +1,6 @@
 import { drawGrid, drawPixels } from './display';
 import { keyBoardSetUp } from './keyboard';
-
+import {play} from './audio';
 const wasm = import('../pkg')
 const wasm_memory = import('../pkg/index_bg.wasm')
 var memory;
@@ -21,12 +21,9 @@ async function initChip8(rom){
     let chip8 = mod.Chip8.new(rom);
     return chip8;
 }
-async function loadRom(){
+async function loadRom(rom){
     let url = "https://zlederman.github.io/chip8-wasm/roms/"
-    let romSelector = document.getElementById('rom-select')
-    let value = romSelector.value
-    console.log(url)
-    let data = await fetch(url + value);
+    let data = await fetch(url + rom);
     let buff = await data.arrayBuffer();
     return new Uint8Array(buff);
 }
@@ -36,12 +33,15 @@ function buf2hex(buffer) { // buffer is an ArrayBuffer
         .join('');
 }
 
-async function start(){
+async function start(rom){
    mod = await wasm;
    memory = (await wasm_memory).memory;
-   let rom = await loadRom();
-   chip8 = await initChip8(rom);
+   let loadedRom = await loadRom(rom);
+   chip8 = await initChip8(loadedRom);
    keyBoardSetUp(chip8, mod);
    render();
 }
-start().then().catch(console.error);
+let button = document.getElementById('start-button')
+button.addEventListener('click',()=>{
+    start(document.getElementById('rom-select').value).then().catch(console.error)
+})
