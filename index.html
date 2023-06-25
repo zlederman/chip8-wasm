@@ -1,9 +1,10 @@
 <!DOCTYPE html>
 <html>
   <head>
+    <script src="index.js"></script>
     <link rel="stylesheet" href="styles.css">
     <meta charset="UTF-8">
-    <title>My Rust + Webpack project!</title>
+    <title>Chip8 Emulator</title>
   </head>
   <body>
     <h1 id="title">CHIP-8 WASM</h1>
@@ -17,8 +18,14 @@
       <option value="maze.ch8">Maze Demo</option>
       <option value="minimal.ch8">Minimal Game</option>
       <option value="particles.ch8">Particles</option>
+      <option value="stars.ch8">Stars</option>
+      <option value="triangle.ch8">Sierpinski Triangle</option>
+      <option value="corax-test.ch8">Corax Test</option>
+      <option value="connect4.ch8">Connect4</option>
     </select>
+    <button id="start-button">Run ROM</button>
     <canvas id="chip8-screen" style="border:1px solid #48ff00;"></canvas>
     <script src="index.js"></script>
+    
   </body>
 </html>

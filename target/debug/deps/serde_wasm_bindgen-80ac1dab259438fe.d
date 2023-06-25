@@ -1,9 +1,0 @@
-/Users/zach-mac/Documents/dev/chip8-wasm/target/debug/deps/serde_wasm_bindgen-80ac1dab259438fe.rmeta: /Users/zach-mac/.cargo/registry/src/index.crates.io-6f17d22bba15001f/serde-wasm-bindgen-0.5.0/src/lib.rs /Users/zach-mac/.cargo/registry/src/index.crates.io-6f17d22bba15001f/serde-wasm-bindgen-0.5.0/src/de.rs /Users/zach-mac/.cargo/registry/src/index.crates.io-6f17d22bba15001f/serde-wasm-bindgen-0.5.0/src/error.rs /Users/zach-mac/.cargo/registry/src/index.crates.io-6f17d22bba15001f/serde-wasm-bindgen-0.5.0/src/ser.rs /Users/zach-mac/.cargo/registry/src/index.crates.io-6f17d22bba15001f/serde-wasm-bindgen-0.5.0/src/../README.md
-
-/Users/zach-mac/Documents/dev/chip8-wasm/target/debug/deps/serde_wasm_bindgen-80ac1dab259438fe.d: /Users/zach-mac/.cargo/registry/src/index.crates.io-6f17d22bba15001f/serde-wasm-bindgen-0.5.0/src/lib.rs /Users/zach-mac/.cargo/registry/src/index.crates.io-6f17d22bba15001f/serde-wasm-bindgen-0.5.0/src/de.rs /Users/zach-mac/.cargo/registry/src/index.crates.io-6f17d22bba15001f/serde-wasm-bindgen-0.5.0/src/error.rs /Users/zach-mac/.cargo/registry/src/index.crates.io-6f17d22bba15001f/serde-wasm-bindgen-0.5.0/src/ser.rs /Users/zach-mac/.cargo/registry/src/index.crates.io-6f17d22bba15001f/serde-wasm-bindgen-0.5.0/src/../README.md
-
-/Users/zach-mac/.cargo/registry/src/index.crates.io-6f17d22bba15001f/serde-wasm-bindgen-0.5.0/src/lib.rs:
-/Users/zach-mac/.cargo/registry/src/index.crates.io-6f17d22bba15001f/serde-wasm-bindgen-0.5.0/src/de.rs:
-/Users/zach-mac/.cargo/registry/src/index.crates.io-6f17d22bba15001f/serde-wasm-bindgen-0.5.0/src/error.rs:
-/Users/zach-mac/.cargo/registry/src/index.crates.io-6f17d22bba15001f/serde-wasm-bindgen-0.5.0/src/ser.rs:
-/Users/zach-mac/.cargo/registry/src/index.crates.io-6f17d22bba15001f/serde-wasm-bindgen-0.5.0/src/../README.md:
