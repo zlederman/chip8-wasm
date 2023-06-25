@@ -1,7 +1,7 @@
 use wasm_bindgen::prelude::*;
 
 
-
+#[derive(Clone)]
 #[wasm_bindgen]
 pub struct Instruction{
     pub operation: u8,

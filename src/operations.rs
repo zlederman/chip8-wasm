@@ -134,7 +134,7 @@ impl Chip8 {
     }
 
     pub fn set_index(&mut self, instr: Instruction){
-         // AXNN
+         // ANNN
         self.index = instr.nnn as usize;
     }
     pub fn add_to_index(&mut self, instr: Instruction){
@@ -220,12 +220,12 @@ impl Chip8 {
             flag = if vy.checked_sub(vx) == None {0} else {1};
         }
         if instr.n == SHIFT_LEFT {
-            val = vx << 1;
+            val = vx.saturating_mul(2);
             flag = (vx >> 7) & 1;
 
         }
         if instr.n == SHIFT_RIGHT {
-            val = vy >> 1;
+            val = vx.saturating_div(2);
             flag = vx & 1;
         }
         self.gp_reg[x] = val;

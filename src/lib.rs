@@ -135,4 +135,7 @@ impl Chip8 {
     pub fn get_register(&self, idx: usize) -> u8 {
         return self.gp_reg[idx];
     }
+    pub fn get_index(&self) -> usize {
+        return self.index;
+    }
 }
