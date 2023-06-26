@@ -8,24 +8,47 @@
   </head>
   <body>
     <h1 id="title">CHIP-8 WASM</h1>
-    <label for="roms">Choose a ROM:</label>
-    <select name="roms" id="rom-select">
-      <option value="base-logo.ch8">Base Logo</option>
-      <option value="trip8.ch8">Trip8</option>
-      <option value="ibm.ch8">IBM Logo</option>
-      <option value="life.ch8">Game of Life</option>
-      <option value="logo.ch8">Chip8 Logo</option>
-      <option value="maze.ch8">Maze Demo</option>
-      <option value="minimal.ch8">Minimal Game</option>
-      <option value="particles.ch8">Particles</option>
-      <option value="stars.ch8">Stars</option>
-      <option value="triangle.ch8">Sierpinski Triangle</option>
-      <option value="corax-test.ch8">Corax Test</option>
-      <option value="connect4.ch8">Connect4</option>
-    </select>
-    <button id="start-button">Run ROM</button>
-    <canvas id="chip8-screen" style="border:1px solid #48ff00;"></canvas>
-    <script src="index.js"></script>
+    <div id="meta-container">
+      <div id="chip8-container">
+        <canvas id="chip8-screen" style="border:1px solid #48ff00;"></canvas>
+      </div>
+      <div id="info-container">
+        <h2>What is Chip8?</h2>
+        <p>Chip8 is an interpreted programming language developed in the 1970s. It was developed for the Chip8 virtual machine to simplify video game development for 1800 Microprocessor Systems.
+        It consists of 35 Unique Opcodes, 4KB of RAM, 1MHz CPU, 32 x 64 pixel display and a hexadecimal keyboard.
+        </p>
+        <h2>How did I Implement it?</h2>
+        <p>I started implementing Chip8 in python but handling different integer sizes proved to be a nightmare. After a little research, I went with rust.
+          I started by implementing the minimum viable opcodes namely DXYN, ANNN, 7XNN, 6XNN, 1NNN and getting the IBM rom to display. I then realized that I wanted to run it in the browser so I used wasm-pack, an all in one WebAssembly project tool. The rust code is compiled to the wasm32-unknown-unknown target with Object bindings exposed via wasm-bindgen. We then use the bindings in JS client code to read from display memory and run the cpu at 10 times on each of the requestAnimationFrame calls</p>
+        <h2>How Does it Work?</h2>
+        <p>This chip8 emulator works by first selecting a ROM from the drop down menu, then pressing Run ROM. To interact with a rom you will use your keyboard. The mapping is as follows</p>
+        <ul>
+          <li>0,1,2,3,4 -> Q,W,E,R,T</li>
+          <li>5,6,7,8,9 -> A,S,D,F,G</li>
+          <li>A,B,C,D,E -> Z,X,C,V,B</li>
+          <li>F -> Space</li>
+        </ul>
+        <label for="roms">Choose a ROM:</label>
+        <p>Trip8 is my favorite ROM!</p>
+        <select name="roms" id="rom-select">
+          <option value="base-logo.ch8">Base Logo</option>
+          <option value="trip8.ch8">Trip8</option>
+          <option value="ibm.ch8">IBM Logo</option>
+          <option value="life.ch8">Game of Life</option>
+          <option value="logo.ch8">Chip8 Logo</option>
+          <option value="maze.ch8">Maze Demo</option>
+          <option value="minimal.ch8">Minimal Game</option>
+          <option value="particles.ch8">Particles</option>
+          <option value="stars.ch8">Stars</option>
+          <option value="triangle.ch8">Sierpinski Triangle</option>
+          <option value="corax-test.ch8">Corax Test</option>
+          <option value="connect4.ch8">Connect4</option>
+        </select>
+        <button id="start-button">Run ROM</button>
+      </div>
+      <script src="index.js"></script>
+    </div>
+    
     
   </body>
 </html>
