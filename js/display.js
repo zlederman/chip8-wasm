@@ -1,6 +1,6 @@
 const height = 32;
 const width = 64;
-const PIXEL_SIZE = 16;
+const PIXEL_SIZE = 8;
 const GRID_COLOR = "#CCCCCC";
 const OFF_COLOR = "#000000";
 const ON_COLOR = "#48ff00";
