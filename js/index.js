@@ -22,7 +22,7 @@ async function initChip8(rom){
     return chip8;
 }
 async function loadRom(rom){
-    let url = "https://zlederman.github.io/chip8-wasm/roms/"
+    let url = "https://chip8-wasm.pages.dev/roms/"
     let data = await fetch(url + rom);
     let buff = await data.arrayBuffer();
     return new Uint8Array(buff);
