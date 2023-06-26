@@ -10,6 +10,79 @@
     <div id="meta-container">
       <div id="chip8-container">
         <canvas id="chip8-screen" style="border:1px solid #48ff00;"></canvas>
+        <div id="register-container">
+          <h2>Registers</h2>
+          <table id="registers">
+            <tr>
+              <td id="0">
+                <h3>0x0</h3>
+                <div class="reg-val"><p>0</p></div>
+              </td>
+              <td id="1">
+                <h3>0x1</h3>
+                <div class="reg-val"><p>0</p></div>
+              </td>
+              <td id="2">
+                <h3>0x2</h3>
+                <div class="reg-val"><p>0</p></div>
+              </td>
+              <td id="3">
+                <h3>0x3</h3>
+                <div class="reg-val"><p>0</p></div>
+              </td>
+              <td id="4">
+                <h3>0x4</h3>
+                <div class="reg-val"><p>0</p></div>
+              </td>
+              <td id="5">
+                <h3>0x5</h3>
+                <div class="reg-val"><p>0</p></div>
+              </td>
+              <td id="6">
+                <h3>0x6</h3>
+                <div class="reg-val"><p>0</p></div>
+              </td>
+              <td id="7">
+                <h3>0x7</h3>
+                <div class="reg-val"><p>0</p></div>
+              </td>
+            </tr>
+            <tr>
+              <td id="8">
+                <h3>0x8</h3>
+                <div class="reg-val"><p>0</p></div>
+              </td>
+              <td id="9">
+                <h3>0x9</h3>
+                <div class="reg-val"><p>0</p></div>
+              </td>
+              <td id="10">
+                <h3>0xA</h3>
+                <div class="reg-val"><p>0</p></div>
+              </td>
+              <td id="11">
+                <h3>0xB</h3>
+                <div class="reg-val"><p>0</p></div>
+              </td>
+              <td id="12">
+                <h3>0xC</h3>
+                <div class="reg-val"><p>0</p></div>
+              </td>
+              <td id="13">
+                <h3>0xD</h3>
+                <div class="reg-val"><p>0</p></div>
+              </td>
+              <td id="14">
+                <h3>0xE</h3>
+                <div class="reg-val"><p>0</p></div>
+              </td>
+              <td id="15">
+                <h3>0xF</h3>
+                <div class="reg-val"><p>0</p></div>
+              </td>
+            </tr>
+          </table>
+        </div>
       </div>
       <div id="info-container">
         <h2>What is Chip8?</h2>
@@ -31,6 +104,7 @@
         <p>Trip8 is my favorite ROM!</p>
         <select name="roms" id="rom-select">
           <option value="base-logo.ch8">Base Logo</option>
+          <option value="snake.ch8">Snake</option>
           <option value="trip8.ch8">Trip8</option>
           <option value="ibm.ch8">IBM Logo</option>
           <option value="life.ch8">Game of Life</option>

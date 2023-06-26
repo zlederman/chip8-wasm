@@ -37,3 +37,21 @@ p {
     font-size: 12px;
     display: inline-block;
 }
+
+.reg-val {
+    height: 50px;
+    width: 50px;
+    background-color: #555;
+}
+
+#registers {
+    font-family: monospace;
+    font-size: 12px;
+    text-align: center;
+    vertical-align: middle;
+    display: table-cell;
+}
+
+#register-container {
+    margin-left: 3%;
+}
