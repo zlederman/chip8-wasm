@@ -1,4 +1,4 @@
-import { drawGrid, drawPixels } from './display';
+import { drawGrid, drawPixels, updateRegisters } from './display';
 import { keyBoardSetUp } from './keyboard';
 import {play} from './audio';
 const wasm = import('../pkg')
@@ -11,6 +11,7 @@ var mod;
 function render() {
     for(let i=0; i < 10; i++){
         chip8.tick();
+        updateRegisters(chip8)
     }
     drawGrid();
     chip8.tick_timers();

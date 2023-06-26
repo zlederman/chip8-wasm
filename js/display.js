@@ -56,3 +56,13 @@ export function drawPixels(chip8, memory, mod) {
 
     ctx.stroke();
 };
+
+export function updateRegisters(chip8) {
+  for(let i = 0; i < 16; i++){
+    let regVal = chip8.get_register(i);
+    let regComp = document.getElementById(`${i}`)
+    console.log(regComp.childNodes)
+    let val = regComp.getElementsByClassName('reg-val')[0].getElementsByTagName('p')[0]
+    val.textContent = regVal
+  }
+}
