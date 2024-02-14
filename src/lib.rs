@@ -1,20 +1,17 @@
-pub mod instructions;
 pub mod fonts;
+pub mod instructions;
 mod operations;
+use fonts::{get_font_val, FONTS_SIZE, FONT_OFFSET};
 use instructions::Instruction;
-use fonts::{get_font_val, FONTS_SIZE,FONT_OFFSET};
 
-use wasm_bindgen::prelude::*;
 use js_sys;
-
+use wasm_bindgen::prelude::*;
 
 const MEM_SIZE: usize = 4096;
 const DISPLAY_WIDTH: usize = 64;
 const DISPLAY_HEIGHT: usize = 32;
 const PIXELS: usize = DISPLAY_HEIGHT * DISPLAY_WIDTH;
 const START_OF_PROG: usize = 0x200;
-
-
 
 #[wasm_bindgen]
 extern "C" {
@@ -31,19 +28,18 @@ macro_rules! console_log {
 #[wasm_bindgen]
 #[repr(u8)]
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
-pub enum PixelState{
+pub enum PixelState {
     ON = 1,
-    OFF = 0
+    OFF = 0,
 }
 
 #[wasm_bindgen]
 #[repr(u8)]
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
-pub enum KeyState{
+pub enum KeyState {
     ON = 1,
-    OFF = 0
+    OFF = 0,
 }
-
 
 #[wasm_bindgen]
 pub struct Chip8 {
@@ -55,23 +51,22 @@ pub struct Chip8 {
     display: [PixelState; PIXELS],
     memory: [u8; MEM_SIZE],
     gp_reg: [u8; 16],
-    keypad: [KeyState; 16]
+    keypad: [KeyState; 16],
 }
-
 
 #[wasm_bindgen]
 impl Chip8 {
     pub fn new(rom: &js_sys::Uint8Array) -> Chip8 {
         console_error_panic_hook::set_once();
-        let mut mem:[u8;MEM_SIZE] = [0; MEM_SIZE];
+        let mut mem: [u8; MEM_SIZE] = [0; MEM_SIZE];
         let mut slice: Vec<u8> = vec![0; rom.length() as usize];
         rom.copy_to(&mut slice[..]);
-        for (i, val) in slice.iter().enumerate(){
+        for (i, val) in slice.iter().enumerate() {
             mem[i + START_OF_PROG] = val.clone() as u8;
-        }// load program
-        for i in 0..FONTS_SIZE{
+        } // load program
+        for i in 0..FONTS_SIZE {
             mem[i + FONT_OFFSET] = get_font_val(i);
-        }// load fonts
+        } // load fonts
         return Chip8 {
             pc: START_OF_PROG,
             index: 0,
@@ -81,13 +76,13 @@ impl Chip8 {
             display: [PixelState::OFF; PIXELS],
             memory: mem,
             gp_reg: [0; 16],
-            keypad: [KeyState::OFF; 16]
-        }
+            keypad: [KeyState::OFF; 16],
+        };
     }
 
-    fn exec(&mut self, instr: Instruction){
-        match instr.operation{
-            0x0 => self.zero(instr), 
+    fn exec(&mut self, instr: Instruction) {
+        match instr.operation {
+            0x0 => self.zero(instr),
             0x1 => self.jump(instr),
             0x2 => self.push(instr),
             0x3 => self.skip_if_eq(instr),
@@ -103,39 +98,39 @@ impl Chip8 {
             0xD => self.draw(instr),
             0xE => self.skip_key(instr),
             0xF => self.f(instr),
-            _ => panic!("Unknown instruction!!!!")
+            _ => panic!("Unknown instruction!!!!"),
         }
     }
 
-    fn fetch(&mut self) -> Instruction{
+    fn fetch(&mut self) -> Instruction {
         let upper_byte = self.memory[self.pc];
         let lower_byte = self.memory[self.pc + 1];
         let raw = u16::from_be_bytes([upper_byte, lower_byte]);
-        return Instruction { 
+        return Instruction {
             operation: ((raw >> 12) & 0xF) as u8,
             x: ((raw >> 8) & 0xF) as u8,
             y: ((raw >> 4) & 0xF) as u8,
             n: (raw & 0xF) as u8,
             nn: (raw & 0xFF) as u8,
-            nnn: (raw & 0xFFF) as u16
-        }
+            nnn: (raw & 0xFFF) as u16,
+        };
     }
     pub fn get_display(&self) -> *const PixelState {
         return self.display.as_ptr();
     }
-    pub fn tick(&mut self){ 
+    pub fn tick(&mut self) {
         let instr = self.fetch();
         self.pc += 2;
         let instr_debug = instr.to_string();
         // console_log!("Instruction {}",instr_debug);
         self.exec(instr);
     }
-    pub fn tick_timers(&mut self){
+    pub fn tick_timers(&mut self) {
         self.delay_timer = self.delay_timer.saturating_sub(1);
         self.sound_timer = self.sound_timer.saturating_sub(1);
     }
 
-    pub fn get_pc(&self) -> usize{
+    pub fn get_pc(&self) -> usize {
         return self.pc;
     }
     pub fn get_top_of_stack(&self) -> usize {
@@ -149,12 +144,11 @@ impl Chip8 {
     }
     pub fn get_mem_at(&self, idx: usize) -> u8 {
         return self.memory[idx];
-
     }
-    pub fn set_key_state(&mut self, idx: usize, state: KeyState){
+    pub fn set_key_state(&mut self, idx: usize, state: KeyState) {
         self.keypad[idx] = state;
     }
-    pub fn get_key_state(&mut self, idx: usize) -> KeyState{
+    pub fn get_key_state(&mut self, idx: usize) -> KeyState {
         return self.keypad[idx];
     }
 }
